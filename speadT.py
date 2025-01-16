@@ -1,37 +1,39 @@
 class Spd:
 	@staticmethod
-	def met1():
+	def met1(s = 3000):
 		#*********************************************** Функция для вычисления чисел Фибоначчи без кэширования ***********************************************
-		from functools import lru_cache
+		
 		import time
-		def fib_none_cache(n):
+		def fib_none_cache(s):
 		    txt = [1, 1]
-		    [txt.append(txt[-1]+txt[-2]) for i in range(n)]
+		    [txt.append(txt[-1]+txt[-2]) for i in range(s)]
 		    return txt
 
 		# Начало времени выполнения
 		begin = time.time()
-		x = fib_none_cache(30)
-		x2 = fib_none_cache(30)
-		x3 = fib_none_cache(30)
+		x = fib_none_cache(s)
+		x2 = fib_none_cache(s)
+		x3 = fib_none_cache(s)
+		x4 = fib_none_cache(s)
 		# Конец времени выполнения
 		end = time.time()
-		print(f"Время, затраченное на выполнение функции без lru_cache: {str(end-begin)[0:4]} сек.", str(x)[:-15], sep='\n')
+		print(f"Время, затраченное на выполнение функции без lru_cache: {str(end-begin)} сек.", x[-1], sep='\n')
 
 		#*********************************************** Функция для вычисления чисел Фибоначчи с кэшированием ***********************************************
-
-		@lru_cache (maxsize=100) 
-		def fib_without_cache(n):
+		from functools import lru_cache
+		@lru_cache #(maxsize=100) 
+		def fib_without_cache(s):
 		    txt = [1, 1]
-		    [txt.append(txt[-1]+txt[-2]) for i in range(n)]
+		    [txt.append(txt[-1]+txt[-2]) for i in range(s)]
 		    return txt
 
 		begin = time.time()
-		x = fib_without_cache(30)
-		x2 = fib_without_cache(30)
-		x3 = fib_without_cache(30)
+		x = fib_without_cache(s)
+		x2 = fib_without_cache(s)
+		x3 = fib_without_cache(s)
+		x4 = fib_without_cache(s)
 		end = time.time()
-		print(f"Время, затраченное на выполнение функции с lru_cache: {str(end-begin)[0:4]} сек.", str(x)[:-15], sep='\n')
+		print(f"Время, затраченное на выполнение функции с lru_cache: {str(end-begin)} сек.", x[-1], sep='\n')
 
 		print('Это объясняется тем, что за счёт кэширования повторные вызовы функции с одинаковыми аргументами выполняются быстрее, так как результат берётся из кэша, а не вычисляется заново. \nНо показатели будут варьиорваться в зависимости от используемого типа данных и частоты процессора.')
 
@@ -105,14 +107,22 @@ def go2():
 	print(Spd.met2())
 	print('****************************************************************')
 
+def go3():
+	print(Spd.met1(50))
+	print('****************************************************************')
+
 menu_bar = Menu(window)
 window.config(menu = menu_bar)
 text1 = Label(window, text = 'К запуску готов!')
 text1.pack()
-button1 = Button(window, text = "1", command = go1)
+button1 = Button(window, text = "Для сильных ЦП", command = go1)
 button1.pack()
-button2 = Button(window, text = "2", command = go2)
+button2 = Button(window, text = "Сравнение множеств, списоков и кортежей", command = go2)
+button2.pack()
+button2 = Button(window, text = "Для слабых ЦП!", command = go3)
 button2.pack()
 menu_bar.add_command(label = "Quit", command = window.quit)
+
+window.mainloop()
 
 window.mainloop()
